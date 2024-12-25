@@ -140,14 +140,69 @@ public class DBBroker {
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT pk.*, nazivMesta FROM plivackiklub pk JOIN mesto m "
-                    + "ON pk.idMesto = m.idMesto WHERE LOWER(nazivPK) LIKE '%"+naziv.toLowerCase()+"%' AND m.idMesto="+mesto.getIdMesto());
+                    + "ON pk.idMesto = m.idMesto WHERE LOWER(nazivPK) LIKE '%"+naziv.toLowerCase()+"%' "
+                            + "AND m.idMesto="+mesto.getIdMesto());
             while (rs.next()) {
                 klubovi.add(new PlivackiKlub(rs.getLong("idPlivackiKlub"), rs.getString("nazivPK"),
-                        rs.getInt("brojPlivaca"), rs.getInt("brojTrenera"), new Mesto(rs.getLong("idMesto"), rs.getString("nazivMesta"))));
+                        rs.getInt("brojPlivaca"), rs.getInt("brojTrenera"), new Mesto(rs.getLong("idMesto"), 
+                                rs.getString("nazivMesta"))));
             }
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return klubovi;
+    }
+
+    public List<Takmicar> vratiTakmPK(PlivackiKlub pk) {
+        List<Takmicar> takms = new LinkedList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM takmicar WHERE idPK=?");
+            ps.setLong(1, pk.getIdKluba());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                takms.add(new Takmicar(rs.getLong("idTakmicar"), rs.getInt("uzrast"),
+                        rs.getString("imePrezime"), Pol.valueOf(rs.getString("pol")), pk));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return takms;
+    }
+
+    public void izbrisiTakmUBazi(Long id) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM takmicar WHERE idTakmicar=?");
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void dodajTakmicara(Takmicar t) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO takmicar VALUES(0,?,?,?,?)");
+            ps.setInt(1, t.getUzrast());
+            ps.setString(2, t.getImePrezime());
+            ps.setString(3, String.valueOf(t.getPol()));
+            ps.setLong(4, t.getPk().getIdKluba());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void izmeniTakm(Takmicar t) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE takmicar SET uzrast=?, "
+                    + "imePrezime=?, idPK=? WHERE idTakmicar=?");
+            ps.setInt(1, t.getUzrast());
+            ps.setString(2, t.getImePrezime());
+            ps.setLong(3, t.getPk().getIdKluba());
+            ps.setLong(4, t.getIdTakmicar());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
 }

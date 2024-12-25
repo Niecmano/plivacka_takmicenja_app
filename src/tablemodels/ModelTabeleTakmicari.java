@@ -14,7 +14,7 @@ import model.Takmicar;
  */
 public class ModelTabeleTakmicari extends AbstractTableModel {
     private List<Takmicar> taks;
-    private String[] kolone = {"id","imePrezime","uzrast","pol"};
+    private String[] kolone = {"ime i prezime","uzrast","pol","klub"};
 
     public ModelTabeleTakmicari(List<Takmicar> taks) {
         this.taks = taks;
@@ -34,10 +34,10 @@ public class ModelTabeleTakmicari extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Takmicar tak = taks.get(rowIndex);
         return switch (columnIndex) {
-            case 0 -> tak.getIdTakmicar();
-            case 1 -> tak.getImePrezime();
-            case 2 -> tak.getUzrast();
-            case 3 -> tak.getPol();
+            case 0 -> tak.getImePrezime();
+            case 1 -> tak.getUzrast();
+            case 2 -> tak.getPol();
+            case 3 -> tak.getPk();
             default -> null;
         };
     }

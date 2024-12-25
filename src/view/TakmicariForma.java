@@ -4,6 +4,11 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+import logika.Kontroler;
+import model.*;
+import tablemodels.ModelTabeleTakmicari;
+
 /**
  *
  * @author Nemanja
@@ -13,8 +18,17 @@ public class TakmicariForma extends javax.swing.JFrame {
     /**
      * Creates new form TakmicariForma
      */
-    public TakmicariForma() {
+    private ModelTabeleTakmicari mtt;
+    private PlivackiKlub pk;
+    
+    public TakmicariForma(){
+    }
+
+    public TakmicariForma(PlivackiKlub pk) {
         initComponents();
+        this.pk=pk;
+        mtt = new ModelTabeleTakmicari(Kontroler.getInstance().vratiTakmicareKluba(pk));
+        jTable2.setModel(mtt);
     }
 
     /**
@@ -47,7 +61,6 @@ public class TakmicariForma extends javax.swing.JFrame {
         jLabel3.setText("Takmičari");
 
         jTable2.setBackground(new java.awt.Color(255, 227, 100));
-        jTable2.setForeground(new java.awt.Color(255, 255, 153));
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -59,13 +72,18 @@ public class TakmicariForma extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable2.setSelectionBackground(new java.awt.Color(255, 204, 0));
+        jTable2.setSelectionBackground(new java.awt.Color(0, 0, 0));
         jTable2.setSelectionForeground(new java.awt.Color(255, 204, 0));
         jScrollPane2.setViewportView(jTable2);
 
         btnObrisi1.setBackground(new java.awt.Color(255, 204, 0));
         btnObrisi1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnObrisi1.setText("Obriši takmičara");
+        btnObrisi1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisi1ActionPerformed(evt);
+            }
+        });
 
         btnDodaj1.setBackground(new java.awt.Color(255, 204, 0));
         btnDodaj1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -111,7 +129,6 @@ public class TakmicariForma extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -121,8 +138,9 @@ public class TakmicariForma extends javax.swing.JFrame {
                                     .addComponent(tfFilterOrg1, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                                     .addComponent(tfFilterOrg))
                                 .addGap(30, 30, 30)
-                                .addComponent(btnFiltriraj1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                .addComponent(btnFiltriraj1))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnObrisi1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnDodaj1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,12 +195,41 @@ public class TakmicariForma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDodaj1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodaj1ActionPerformed
-        // TODO add your handling code here:
+        TakmicarDialog td = new TakmicarDialog(this, true, null);
+        td.setVisible(true);
+        mtt = new ModelTabeleTakmicari(Kontroler.getInstance().vratiTakmicareKluba(pk));
+        jTable2.setModel(mtt);
     }//GEN-LAST:event_btnDodaj1ActionPerformed
 
     private void btnIzmeni1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeni1ActionPerformed
-        // TODO add your handling code here:
+        int izbor = jTable2.getSelectedRow();
+        if(izbor==-1){
+            JOptionPane.showMessageDialog(this,"Niste izabrali nijednog takmicara!", 
+                    "Greska",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Takmicar tak = Kontroler.getInstance().vratiTakmicareKluba(pk).get(izbor);
+        TakmicarDialog td = new TakmicarDialog(this, true, tak);
+        td.setVisible(true);
+        mtt = new ModelTabeleTakmicari(Kontroler.getInstance().vratiTakmicareKluba(pk));
+        jTable2.setModel(mtt);
     }//GEN-LAST:event_btnIzmeni1ActionPerformed
+
+    private void btnObrisi1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisi1ActionPerformed
+        int izbor = jTable2.getSelectedRow();
+        if(izbor==-1){
+            JOptionPane.showMessageDialog(this,"Niste izabrali nijednog takmicara!", 
+                    "Greska",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Takmicar tak = Kontroler.getInstance().vratiTakmicareKluba(pk).get(izbor);
+        int odluka = JOptionPane.showConfirmDialog(this, "Da li zelite da obrisete takmicara "+tak,
+                "Potvrda brisanja", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(odluka!=JOptionPane.YES_OPTION) return;
+        Kontroler.getInstance().izbrisiTakmicara(tak.getIdTakmicar());
+        mtt = new ModelTabeleTakmicari(Kontroler.getInstance().vratiTakmicareKluba(pk));
+        jTable2.setModel(mtt);
+    }//GEN-LAST:event_btnObrisi1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -73,4 +73,16 @@ public class PlivackiKlub {
     public void setMesto(Mesto mesto) {
         this.mesto = mesto;
     }
+
+    @Override
+    public String toString() {
+        return nazivKluba+" "+mesto;
+    }
+    
+    @Override   
+    public boolean equals(Object obj) {
+        if(obj==null || !(obj instanceof PlivackiKlub)) return false;
+        PlivackiKlub pk = (PlivackiKlub) obj;
+        return pk.getIdKluba().equals(idKluba);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import model.Mesto;
 import model.Organizator;
 import model.PlivackiKlub;
+import model.Takmicar;
 
 /**
  *
@@ -63,5 +64,21 @@ public class Kontroler {
 
     public List<PlivackiKlub> filtrirajKlubovePoNazivu(String naziv, Mesto mesto) {
         return dbb.filterKlubovaPoNazivu(naziv,mesto);
+    }
+
+    public List<Takmicar> vratiTakmicareKluba(PlivackiKlub pk) {
+        return dbb.vratiTakmPK(pk);
+    }
+
+    public void izbrisiTakmicara(Long id) {
+        dbb.izbrisiTakmUBazi(id);
+    }
+
+    public void dodajTakm(Takmicar t) {
+        dbb.dodajTakmicara(t);
+    }
+
+    public void izmeniTakm(Takmicar t) {
+        dbb.izmeniTakm(t);
     }
 }

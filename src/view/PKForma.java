@@ -7,7 +7,7 @@ package view;
 import java.util.List;
 import javax.swing.JOptionPane;
 import logika.Kontroler;
-import model.Mesto;
+import model.*;
 import tablemodels.ModelTabelePK;
 
 /**
@@ -138,14 +138,7 @@ public class PKForma extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnIzmeni)
-                            .addComponent(btnDodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnObrisi)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
@@ -160,8 +153,16 @@ public class PKForma extends javax.swing.JFrame {
                         .addGap(56, 56, 56)
                         .addComponent(btnFiltriraj, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(118, 118, 118)
-                        .addComponent(btnTakmicari)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(btnTakmicari)
+                        .addContainerGap(147, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnIzmeni)
+                            .addComponent(btnDodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnObrisi))
+                        .addGap(67, 67, 67))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,13 +170,10 @@ public class PKForma extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(104, 104, 104)
-                        .addComponent(btnTakmicari)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnTakmicari))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(123, 123, 123)
-                        .addComponent(btnFiltriraj)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnFiltriraj))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel1)
@@ -186,15 +184,19 @@ public class PKForma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(comboMesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboMesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnObrisi)
                         .addGap(50, 50, 50)
                         .addComponent(btnIzmeni)
                         .addGap(54, 54, 54)
                         .addComponent(btnDodaj)
-                        .addGap(49, 49, 49)))
-                .addGap(22, 22, 22))
+                        .addGap(68, 68, 68))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -225,15 +227,16 @@ public class PKForma extends javax.swing.JFrame {
                     "Greska", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        PlivackiKlub sc = kontroler.vratiKlubove().get(izbor);
         int potvrda = JOptionPane.showConfirmDialog(this, 
-        "Da li ste sigurni da želite da obrišete klub: " + mtpk.getValueAt(izbor, 1) + "?", 
+        "Da li ste sigurni da želite da obrišete klub: " + sc.getNazivKluba() + "?", 
         "Potvrda brisanja", 
         JOptionPane.YES_NO_OPTION, 
         JOptionPane.WARNING_MESSAGE);
     
     if (potvrda != JOptionPane.YES_OPTION) {
         return;
-    }kontroler.izbrisiKlubIzBaze((Long)mtpk.getValueAt(izbor, 0));    
+    }kontroler.izbrisiKlubIzBaze(sc.getIdKluba());    
         mtpk = new ModelTabelePK(kontroler.vratiKlubove());
         jTable1.setModel(mtpk);
     }//GEN-LAST:event_btnObrisiActionPerformed
@@ -258,7 +261,13 @@ public class PKForma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFiltrirajActionPerformed
 
     private void btnTakmicariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTakmicariActionPerformed
-        TakmicariForma ft = new TakmicariForma();
+        int izbor = jTable1.getSelectedRow();
+        if(izbor == -1){
+            JOptionPane.showMessageDialog(this, "Niste izabrali nijedan klub!", 
+                    "Greska", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        TakmicariForma ft = new TakmicariForma(kontroler.vratiKlubove().get(izbor));
         ft.setVisible(true);
     }//GEN-LAST:event_btnTakmicariActionPerformed
 

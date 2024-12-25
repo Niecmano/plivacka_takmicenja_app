@@ -14,12 +14,15 @@ public class Takmicar {
     private int uzrast;
     private String imePrezime;
     private Pol pol;
+    //promena KM
+    private PlivackiKlub pk;
 
-    public Takmicar(Long idTakmicar, int uzrast, String imePrezime, Pol pol) {
+    public Takmicar(Long idTakmicar, int uzrast, String imePrezime, Pol pol, PlivackiKlub pk) {
         this.idTakmicar = idTakmicar;
         this.uzrast = uzrast;
         this.imePrezime = imePrezime;
         this.pol = pol;
+        this.pk = pk;
     }
 
     public Long getIdTakmicar() {
@@ -53,4 +56,18 @@ public class Takmicar {
     public void setPol(Pol pol) {
         this.pol = pol;
     }
+
+    public PlivackiKlub getPk() {
+        return pk;
+    }
+
+    public void setPk(PlivackiKlub pk) {
+        this.pk = pk;
+    }
+
+    @Override
+    public String toString() {
+        return imePrezime;
+    }
+    
 }

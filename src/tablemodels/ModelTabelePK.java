@@ -14,7 +14,7 @@ import model.PlivackiKlub;
  */
 public class ModelTabelePK extends AbstractTableModel{
     private List<PlivackiKlub> klubovi;
-    private String[] kolone = {"id","naziv","mesto","broj plivaca","broj trenera","ukupno clanova"};
+    private String[] kolone = {"naziv","mesto","broj plivaca","broj trenera","ukupno clanova"};
 
     public ModelTabelePK(List<PlivackiKlub> klubovi) {
         this.klubovi = klubovi;
@@ -34,12 +34,11 @@ public class ModelTabelePK extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         PlivackiKlub pk = klubovi.get(rowIndex);
         return switch (columnIndex) {
-            case 0 -> pk.getIdKluba();
-            case 1 -> pk.getNazivKluba();
-            case 2 -> pk.getMesto();
-            case 3 -> pk.getBrojPlivaca();
-            case 4 -> pk.getBrojTrenera();
-            case 5 -> pk.getUkupnoClanova();
+            case 0 -> pk.getNazivKluba();
+            case 1 -> pk.getMesto();
+            case 2 -> pk.getBrojPlivaca();
+            case 3 -> pk.getBrojTrenera();
+            case 4 -> pk.getUkupnoClanova();
             default -> null;
         };
     }
